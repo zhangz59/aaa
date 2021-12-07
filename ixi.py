@@ -4,7 +4,7 @@ import SimpleITK as sitk
 import os
 from torch.utils.data.dataset import Dataset
 
-
+###
 def extract_random_array(img, size):
     start = np.zeros((3,))
     end = np.zeros((3,))
