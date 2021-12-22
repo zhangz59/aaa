@@ -62,11 +62,12 @@ class IxiDataset(Dataset):
     def __getitem__(self, index):
         row = self.csv.loc[index]
         att = self.attribute_dict[self.attribute](row)
-        filename = "IXI" + str(int(row['IXI_ID'])) + '-HH-1590-T1.' + 'nii.gz'
+
+        filename = str(int(row['IXI_ID']))+'.nii.gz'
 
         t1p = os.path.join("IXI", filename)
-        #t1p = "IXI/IXI002-Guys-0828-T1.nii.gz"
-        print(t1p)
+
+
         t1 = sitk.GetArrayFromImage(sitk.ReadImage(t1p))
 
         img = t1.astype(np.float32)

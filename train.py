@@ -15,6 +15,8 @@ from torch.nn import functional as F
 from tensorboardX import SummaryWriter
 
 from ixi import IxiDataset
+from resnet import resnet50
+
 
 
 from bagnets import bagnet9, bagnet17, bagnet33, bagnet177
@@ -143,6 +145,7 @@ def train(args):
     train_loader, val_loader, test_loader = get_datasets(
         args.data_path, args.batch_size, args.attribute,
         args.scale)
+    #model= resnet50()
 
     if args.rf == 9:
         model = bagnet9(num_classes=args.num_classes,
@@ -156,6 +159,7 @@ def train(args):
     elif args.rf == 177:
         model = bagnet177(num_classes=args.num_classes,
                           scale_filters=args.scale_factor)
+
     print(model)
 
     device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
