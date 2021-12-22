@@ -15,6 +15,7 @@ from torch.nn import functional as F
 from tensorboardX import SummaryWriter
 
 from ixi import IxiDataset
+from resnet import resnet18
 
 
 from bagnets import bagnet9, bagnet17, bagnet33, bagnet177
@@ -143,7 +144,9 @@ def train(args):
     train_loader, val_loader, test_loader = get_datasets(
         args.data_path, args.batch_size, args.attribute,
         args.scale)
-
+    model= resnet18()
+    print(model)
+    '''
     if args.rf == 9:
         model = bagnet9(num_classes=args.num_classes,
                         scale_filters=args.scale_factor)
@@ -156,10 +159,11 @@ def train(args):
     elif args.rf == 177:
         model = bagnet177(num_classes=args.num_classes,
                           scale_filters=args.scale_factor)
-    print(model)
+    '''
 
-    device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
-    raw_model = model
+
+    device=torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
+    raw_model=model
     if torch.cuda.device_count() > 1:
         print('using multiple gpus')
         model = torch.nn.DataParallel(model)
@@ -212,8 +216,8 @@ def train(args):
     checkpoint_path = os.path.join(args.logdir, 'checkpoint.pth')
     writer = SummaryWriter(args.logdir)
     if load_checkpoint(state, checkpoint_path):
-        raw_model.load_state_dict(state['state_dict'])
-        optimizer.load_state_dict(state['optimizer'])
+        raw_model.load_state_dict(state['state_dict'],False)
+       # optimizer.load_state_dict(state['optimizer'])
         scheduler.load_state_dict(state['scheduler'])
         stats_csv = state['stats_csv']
 
